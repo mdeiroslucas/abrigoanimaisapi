@@ -1,5 +1,6 @@
 package br.com.mdros.adopet.api.model;
 
+import br.com.mdros.adopet.api.dto.CadastroPetDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -13,45 +14,42 @@ public class Pet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
-    @Column(name = "tipo")
     private TipoPet tipo;
 
-    @NotBlank
-    @Column(name = "nome")
     private String nome;
 
-    @NotBlank
-    @Column(name = "raca")
     private String raca;
 
-    @NotNull
-    @Column(name = "idade")
     private Integer idade;
 
-    @NotBlank
-    @Column(name = "cor")
     private String cor;
 
-    @NotNull
-    @Column(name = "peso")
     private Float peso;
 
-    @Column(name = "adotado")
     private Boolean adotado;
 
     @ManyToOne
-    @JsonBackReference("abrigo_pets")
-    @JoinColumn(name = "abrigo_id")
     private Abrigo abrigo;
 
     @OneToOne(mappedBy = "pet")
-    @JsonBackReference("adocao_pets")
     private Adocao adocao;
+
+    public Pet() {
+    }
+
+    public Pet(CadastroPetDto dados, Abrigo abrigo) {
+        this.tipo = dados.tipo();
+        this.nome = dados.nome();
+        this.raca = dados.raca();
+        this.idade = dados.idade();
+        this.cor = dados.cor();
+        this.peso = dados.peso();
+        this.abrigo = abrigo;
+        this.adotado = Boolean.FALSE;
+    }
 
     @Override
     public boolean equals(Object o) {

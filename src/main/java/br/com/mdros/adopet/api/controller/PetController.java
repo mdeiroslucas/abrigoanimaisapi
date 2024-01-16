@@ -1,7 +1,9 @@
 package br.com.mdros.adopet.api.controller;
 
+import br.com.mdros.adopet.api.dto.ListagemPetDto;
 import br.com.mdros.adopet.api.model.Pet;
 import br.com.mdros.adopet.api.repository.PetRepository;
+import br.com.mdros.adopet.api.service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,18 +18,11 @@ import java.util.List;
 public class PetController {
 
     @Autowired
-    private PetRepository repository;
+    private PetService petService;
 
     @GetMapping
-    public ResponseEntity<List<Pet>> listarTodosDisponiveis() {
-        List<Pet> pets = repository.findAll();
-        List<Pet> disponiveis = new ArrayList<>();
-        for (Pet pet : pets) {
-            if (pet.getAdotado() == false) {
-                disponiveis.add(pet);
-            }
-        }
-        return ResponseEntity.ok(disponiveis);
+    public ResponseEntity<List<ListagemPetDto>> listarPetDisponiveis() {
+        List<ListagemPetDto> pets = petService.listarPetDisponiveis();
+        return ResponseEntity.ok(pets);
     }
-
 }
