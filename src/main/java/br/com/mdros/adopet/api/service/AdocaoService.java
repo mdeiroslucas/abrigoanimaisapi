@@ -1,8 +1,8 @@
 package br.com.mdros.adopet.api.service;
 
-import br.com.mdros.adopet.api.dto.AprovacaoAdocaoDto;
-import br.com.mdros.adopet.api.dto.ReprovacaoAdocaoDto;
-import br.com.mdros.adopet.api.dto.SolicitacaoAdocaoDto;
+import br.com.mdros.adopet.api.dto.AdocaoDto.AprovacaoAdocaoDto;
+import br.com.mdros.adopet.api.dto.AdocaoDto.ReprovacaoAdocaoDto;
+import br.com.mdros.adopet.api.dto.AdocaoDto.SolicitacaoAdocaoDto;
 import br.com.mdros.adopet.api.model.Adocao;
 import br.com.mdros.adopet.api.model.Pet;
 import br.com.mdros.adopet.api.model.Tutor;

@@ -1,6 +1,6 @@
 package br.com.mdros.adopet.api.validacoes;
 
-import br.com.mdros.adopet.api.dto.SolicitacaoAdocaoDto;
+import br.com.mdros.adopet.api.dto.AdocaoDto.SolicitacaoAdocaoDto;
 import br.com.mdros.adopet.api.exception.ValidacaoException;
 import br.com.mdros.adopet.api.model.StatusAdocao;
 import br.com.mdros.adopet.api.repository.AdocaoRepository;

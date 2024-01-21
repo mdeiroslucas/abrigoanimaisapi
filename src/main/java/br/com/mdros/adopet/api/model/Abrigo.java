@@ -1,11 +1,7 @@
 package br.com.mdros.adopet.api.model;
 
-import br.com.mdros.adopet.api.dto.AbrigoDto;
-import br.com.mdros.adopet.api.dto.CadastroAbrigoDto;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import br.com.mdros.adopet.api.dto.AbrigoDto.CadastroAbrigoDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 import java.util.List;
@@ -26,8 +22,8 @@ public class Abrigo {
 
     private String email;
 
-//    @OneToMany(mappedBy = "abrigo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    private List<Pet> pets;
+    @OneToMany(mappedBy = "abrigo", cascade = CascadeType.ALL)
+    private List<Pet> pets;
 
     public Abrigo() {
     }
@@ -87,5 +83,13 @@ public class Abrigo {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void adicionarPet(Pet pet) {
+        pets.add(pet);
+    }
+
+    public List<Pet> getPets() {
+        return pets;
     }
 }

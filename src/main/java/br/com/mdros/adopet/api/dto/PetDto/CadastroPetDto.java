@@ -1,4 +1,4 @@
-package br.com.mdros.adopet.api.dto;
+package br.com.mdros.adopet.api.dto.PetDto;
 
 import br.com.mdros.adopet.api.model.Abrigo;
 import br.com.mdros.adopet.api.model.Pet;
@@ -19,12 +19,12 @@ public record CadastroPetDto(
         @NotBlank
         String cor,
         @NotNull
-        float peso
+        float peso,
 
-//        @NotNull
-//        AbrigoDto abritoDto
+        @NotNull
+        Abrigo abrigo
 ){
-        public CadastroPetDto(Pet pet) {
-                this(pet.getTipo(), pet.getNome(), pet.getRaca(), pet.getIdade(), pet.getCor(), pet.getPeso());
+        public CadastroPetDto(Pet pet, Abrigo abrigo) {
+                this(pet.getTipo(), pet.getNome(), pet.getRaca(), pet.getIdade(), pet.getCor(), pet.getPeso(), abrigo);
         }
 }

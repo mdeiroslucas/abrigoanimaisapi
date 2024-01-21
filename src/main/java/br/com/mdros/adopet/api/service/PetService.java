@@ -1,12 +1,12 @@
 package br.com.mdros.adopet.api.service;
 
-import br.com.mdros.adopet.api.dto.CadastroPetDto;
-import br.com.mdros.adopet.api.dto.ListagemPetDto;
+import br.com.mdros.adopet.api.dto.PetDto.CadastroPetDto;
+import br.com.mdros.adopet.api.dto.PetDto.ListagemPetDto;
 import br.com.mdros.adopet.api.model.Abrigo;
 import br.com.mdros.adopet.api.model.Pet;
+import br.com.mdros.adopet.api.repository.AbrigoRepository;
 import br.com.mdros.adopet.api.repository.PetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +17,9 @@ public class PetService {
     @Autowired
     private PetRepository petRepository;
 
+    @Autowired
+    private AbrigoRepository abrigoRepository;
+
     public List<ListagemPetDto> listarPetDisponiveis() {
         return petRepository
                     .findAllByAdotadoFalse()
@@ -24,8 +27,4 @@ public class PetService {
                     .map(ListagemPetDto::new)
                     .toList();
     }
-
-//    public void cadastrarPet(Abrigo abrigo, CadastroPetDto petDto) {
-//        petRepository.save(new Pet(petDto));
-//    }
 }

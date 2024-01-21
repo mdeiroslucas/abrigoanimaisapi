@@ -1,9 +1,9 @@
 package br.com.mdros.adopet.api.service;
 
-import br.com.mdros.adopet.api.dto.AbrigoDto;
-import br.com.mdros.adopet.api.dto.CadastroAbrigoDto;
-import br.com.mdros.adopet.api.dto.CadastroPetDto;
-import br.com.mdros.adopet.api.dto.ListagemPetDto;
+import br.com.mdros.adopet.api.dto.AbrigoDto.AbrigoDto;
+import br.com.mdros.adopet.api.dto.AbrigoDto.CadastroAbrigoDto;
+import br.com.mdros.adopet.api.dto.PetDto.CadastroPetDto;
+import br.com.mdros.adopet.api.dto.PetDto.ListagemPetDto;
 import br.com.mdros.adopet.api.exception.ValidacaoException;
 import br.com.mdros.adopet.api.model.Abrigo;
 import br.com.mdros.adopet.api.model.Pet;
@@ -48,34 +48,30 @@ public class AbrigoService {
     }
 
     public ResponseEntity<List<ListagemPetDto>> listarPets(@Valid String idOuNome){
-//        try {
             Long id = Long.parseLong(idOuNome);
             List<Pet> pets = abrigoRepository.getReferenceById(id).getPets();
+
             List<ListagemPetDto> petsDto = pets.stream().map(ListagemPetDto::new).collect(Collectors.toList());
 
             return ResponseEntity.ok(petsDto);
-//        } catch (EntityNotFoundException enfe) {
-//            return ResponseEntity.notFound().build();
-//        } catch (NumberFormatException e) {
-//            try {
-//                List<Pet> pets = repository.findByNome(idOuNome).getPets();
-//                return ResponseEntity.ok(pets);
-//            } catch (EntityNotFoundException enfe) {
-//                return ResponseEntity.notFound().build();
-//            }
-//        }
     }
 
-    public void cadastrarPet(String idOuNome, @Valid CadastroPetDto petDto) {
+    public void cadastrarPet(String idOuNome, CadastroPetDto petDto) {
+        Abrigo abrigo;
         try {
             Long id = Long.parseLong(idOuNome);
-            Abrigo abrigo = abrigoRepository.getReferenceById(id);
-            Pet pet = new Pet(petDto);
-            abrigo.getPets().add(pet);
-            abrigoRepository.save(abrigo);
-//            return ResponseEntity.ok().build();
-        } catch (EntityNotFoundException enfe) {
-            return ResponseEntity.notFound().build();
+            abrigo = abrigoRepository.getReferenceById(id);
+        } catch (NumberFormatException e) {
+            abrigo = abrigoRepository.findByNome(idOuNome);
         }
+
+        if (abrigo == null) {
+            throw new RuntimeException("Abrigo não encontrado");
+        }
+
+        Pet pet = new Pet(petDto, abrigo);
+        petRepository.save(pet);
+        abrigo.adicionarPet(pet);
+        abrigoRepository.save(abrigo);
     }
 }

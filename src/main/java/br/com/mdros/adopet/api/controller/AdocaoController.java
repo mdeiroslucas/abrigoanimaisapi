@@ -1,8 +1,8 @@
 package br.com.mdros.adopet.api.controller;
 
-import br.com.mdros.adopet.api.dto.AprovacaoAdocaoDto;
-import br.com.mdros.adopet.api.dto.ReprovacaoAdocaoDto;
-import br.com.mdros.adopet.api.dto.SolicitacaoAdocaoDto;
+import br.com.mdros.adopet.api.dto.AdocaoDto.AprovacaoAdocaoDto;
+import br.com.mdros.adopet.api.dto.AdocaoDto.ReprovacaoAdocaoDto;
+import br.com.mdros.adopet.api.dto.AdocaoDto.SolicitacaoAdocaoDto;
 import br.com.mdros.adopet.api.exception.ValidacaoException;
 import br.com.mdros.adopet.api.service.AdocaoService;
 import jakarta.validation.Valid;
@@ -40,8 +40,6 @@ public class AdocaoController {
     @PutMapping("/reprovar")
     @Transactional
     public ResponseEntity<String> reprovar(@RequestBody @Valid ReprovacaoAdocaoDto dto) {
-
-
         return ResponseEntity.ok().build();
     }
 

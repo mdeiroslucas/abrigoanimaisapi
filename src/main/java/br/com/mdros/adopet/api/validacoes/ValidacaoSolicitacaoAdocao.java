@@ -1,7 +1,7 @@
 package br.com.mdros.adopet.api.validacoes;
 
-import br.com.mdros.adopet.api.dto.SolicitacaoAdocaoDto;
+import br.com.mdros.adopet.api.dto.AdocaoDto.SolicitacaoAdocaoDto;
 
 public interface ValidacaoSolicitacaoAdocao {
-    public void validar(SolicitacaoAdocaoDto dto);
+    void validar(SolicitacaoAdocaoDto dto);
 }

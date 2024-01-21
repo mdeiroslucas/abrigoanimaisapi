@@ -1,4 +1,4 @@
-package br.com.mdros.adopet.api.dto;
+package br.com.mdros.adopet.api.dto.PetDto;
 
 import br.com.mdros.adopet.api.model.Pet;
 import br.com.mdros.adopet.api.model.TipoPet;

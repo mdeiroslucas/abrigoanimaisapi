@@ -1,4 +1,4 @@
-package br.com.mdros.adopet.api.dto;
+package br.com.mdros.adopet.api.dto.AbrigoDto;
 
 import br.com.mdros.adopet.api.model.Abrigo;
 import jakarta.validation.constraints.NotBlank;
