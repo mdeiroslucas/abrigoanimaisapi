@@ -1,7 +1,7 @@
 package br.com.mdros.adopet.api.service;
 
 import br.com.mdros.adopet.api.dto.PetDto.CadastroPetDto;
-import br.com.mdros.adopet.api.dto.PetDto.ListagemPetDto;
+import br.com.mdros.adopet.api.dto.PetDto.PetDto;
 import br.com.mdros.adopet.api.model.Abrigo;
 import br.com.mdros.adopet.api.model.Pet;
 import br.com.mdros.adopet.api.repository.AbrigoRepository;
@@ -20,11 +20,18 @@ public class PetService {
     @Autowired
     private AbrigoRepository abrigoRepository;
 
-    public List<ListagemPetDto> listarPetDisponiveis() {
+    public List<PetDto> listarPetDisponiveis() {
         return petRepository
                     .findAllByAdotadoFalse()
                     .stream()
-                    .map(ListagemPetDto::new)
+                    .map(PetDto::new)
                     .toList();
+    }
+
+    public void cadastrarPet(CadastroPetDto cadastroPetDto){
+        Abrigo abrigo = abrigoRepository.getReferenceById(cadastroPetDto.abrigo().getId());
+        Pet pet = new Pet(cadastroPetDto, abrigo);
+
+       petRepository.save(pet);
     }
 }

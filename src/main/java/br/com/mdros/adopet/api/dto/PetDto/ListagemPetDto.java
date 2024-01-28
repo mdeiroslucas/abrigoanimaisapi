@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record ListagemPetDto(
+        long id,
         @NotNull
         TipoPet tipo,
         @NotBlank
@@ -16,6 +17,6 @@ public record ListagemPetDto(
         Integer idade
 ) {
     public ListagemPetDto(Pet pet){
-        this(pet.getTipo(), pet.getNome(), pet.getRaca(), pet.getIdade());
+        this(pet.getId(), pet.getTipo(), pet.getNome(), pet.getRaca(), pet.getIdade());
     }
 }

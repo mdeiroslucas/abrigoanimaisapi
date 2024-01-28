@@ -1,6 +1,7 @@
 package br.com.mdros.adopet.api.controller;
 
 import br.com.mdros.adopet.api.dto.PetDto.ListagemPetDto;
+import br.com.mdros.adopet.api.dto.PetDto.PetDto;
 import br.com.mdros.adopet.api.service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,8 @@ public class PetController {
     private PetService petService;
 
     @GetMapping
-    public ResponseEntity<List<ListagemPetDto>> listarPetDisponiveis() {
-        List<ListagemPetDto> pets = petService.listarPetDisponiveis();
+    public ResponseEntity<List<PetDto>> listarPetDisponiveis() {
+        List<PetDto> pets = petService.listarPetDisponiveis();
         return ResponseEntity.ok(pets);
     }
 }
