@@ -13,32 +13,32 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(MockitoExtension.class)
-class ValidacaoPetComAdocaoEmAndamentoTest {
+class ValidacaoPetComTutorEmAndamentoTest {
     @Mock
     private AdocaoRepository adocaoRepository;
-
     @Mock
     private SolicitacaoAdocaoDto solicitacaoAdocaoDto;
-
     @InjectMocks
-    private ValidacaoPetComAdocaoEmAndamento validacao;
+    private ValidacaoPetComTutorEmAndamento validacao;
 
     @Test
-    void DevePermitirAdocaoParaPetComAdocaoEmAndamento (){
-
-        BDDMockito.given(adocaoRepository.existsByPetIdAndStatus(solicitacaoAdocaoDto.idPet(), StatusAdocao.AGUARDANDO_AVALIACAO)).willReturn(false);
-
-        Assertions.assertDoesNotThrow(() -> validacao.validar(solicitacaoAdocaoDto));
-    }
-
-    @Test
-    void naoDevePermitirAdocaoParaPetComAdocaoEmAndamento (){
-
-        BDDMockito.given(adocaoRepository.existsByPetIdAndStatus(solicitacaoAdocaoDto.idPet(), StatusAdocao.AGUARDANDO_AVALIACAO)).willReturn(true);
+    void deveriaBloquearAdocaoQuandoTutorJaEstiverComOutraAdocaoEmAndamento(){
+        BDDMockito.given(
+                adocaoRepository.existsByTutorIdAndStatus(solicitacaoAdocaoDto.idTutor(), StatusAdocao.AGUARDANDO_AVALIACAO)
+        ).willReturn(true);
 
         Assertions.assertThrows(ValidacaoException.class, () -> validacao.validar(solicitacaoAdocaoDto));
     }
 
+    @Test
+    void naoDeveriaBloquearAdocaoQuandoTutorJaEstiverComOutraAdocaoEmAndamento(){
+        BDDMockito.given(
+                adocaoRepository.existsByTutorIdAndStatus(solicitacaoAdocaoDto.idTutor(), StatusAdocao.AGUARDANDO_AVALIACAO)
+        ).willReturn(false);
+
+        Assertions.assertDoesNotThrow(() -> validacao.validar(solicitacaoAdocaoDto));
+    }
 
 }
