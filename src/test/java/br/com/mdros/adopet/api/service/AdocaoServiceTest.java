@@ -99,13 +99,5 @@ class AdocaoServiceTest {
         for (ValidacaoSolicitacaoAdocao validacao : validacoes) {
             verify(validacao, times(1)).validar(dto);
         }
-
-//        BDDMockito.then(validador1).should().validar(dto);
-//        BDDMockito.then(validador2).should().validar(dto);
-
-//        BDDMockito.then(validador1).should().validar(dto);
-//        BDDMockito.then(validador2).should().validar(dto);
-
     }
-
 }

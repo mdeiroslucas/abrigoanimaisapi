@@ -47,13 +47,13 @@ public class AbrigoService {
         abrigoRepository.save(abrigo);
     }
 
-    public ResponseEntity<List<ListagemPetDto>> listarPets(@Valid String idOuNome){
+    public List<ListagemPetDto> listarPets(@Valid String idOuNome){
             Long id = Long.parseLong(idOuNome);
             List<Pet> pets = abrigoRepository.getReferenceById(id).getPets();
 
             List<ListagemPetDto> petsDto = pets.stream().map(ListagemPetDto::new).collect(Collectors.toList());
 
-            return ResponseEntity.ok(petsDto);
+            return petsDto;
     }
 
     public void cadastrarPet(String idOuNome, CadastroPetDto petDto) {

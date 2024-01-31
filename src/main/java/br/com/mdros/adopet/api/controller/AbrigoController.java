@@ -44,13 +44,8 @@ public class AbrigoController {
     }
 
     @GetMapping("/{idOuNome}/pets")
-    public ResponseEntity<List<ListagemPetDto>> listarPets(@PathVariable String idOuNome) {
-        try {
-            return abrigoService.listarPets(idOuNome);
-        } catch (ValidacaoException exception) {
-            return ResponseEntity.notFound().build();
-        }
-
+    public List<ListagemPetDto> listarPets(@PathVariable String idOuNome) {
+        return abrigoService.listarPets(idOuNome);
     }
 
     @PostMapping("/{idOuNome}/pets")
