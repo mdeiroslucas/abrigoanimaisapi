@@ -15,12 +15,10 @@ public record CadastroPetDto(
         String raca,
         @NotNull
         Integer idade,
-
         @NotBlank
         String cor,
         @NotNull
         float peso,
-
         @NotNull
         Abrigo abrigo
 ){

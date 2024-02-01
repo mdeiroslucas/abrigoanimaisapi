@@ -21,8 +21,11 @@ import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,25 +33,16 @@ class AbrigoServiceTest {
 
     @InjectMocks
     private AbrigoService abrigoService;
-
     @Mock
     private AbrigoRepository abrigoRepository;
-
     @Mock
     private CadastroAbrigoDto cadastroAbrigoDto;
     @Mock
     private PetRepository petRepository;
     @Captor
     private ArgumentCaptor<Abrigo> abrigoCaptor;
-
     @Mock
     private Abrigo abrigo;
-
-    @Mock
-    private AbrigoDto abrigoDto;
-
-    @Mock
-    private List<Pet> petsAbrigo = new ArrayList<>();
 
     @Test
     void deveriaTrazerListaDeAbrigos(){
@@ -57,7 +51,7 @@ class AbrigoServiceTest {
         abrigoService.listar();
 
         //Assert
-        BDDMockito.then(abrigoRepository).should().findAll();
+        then(abrigoRepository).should().findAll();
     }
 
     @Test
@@ -68,7 +62,7 @@ class AbrigoServiceTest {
         abrigoService.cadastrar(cadastroAbrigoDto);
 
         //Act
-        BDDMockito.then(abrigoRepository).should(times(1)).save(abrigoCaptor.capture());
+        then(abrigoRepository).should(times(1)).save(abrigoCaptor.capture());
 
         Abrigo abrigoSalvo = abrigoCaptor.getValue();
 
@@ -79,49 +73,15 @@ class AbrigoServiceTest {
     }
 
     @Test
-    void deveriaListarPetsPeloNome(){
+    void deveriaChamarListaDePetsDoAbrigoAtravesDoNome() {
         //Arrange
-        float id = 1l;
-        BDDMockito.given(abrigoRepository.findById(id)).willReturn(abrigo);
+        String nome = "Miau";
+        given(abrigoRepository.findByNome(nome)).willReturn(Optional.of(abrigo));
 
         //Act
-        abrigoService.listarPets(id);
+        abrigoService.listarPetsDoAbrigo(nome);
 
         //Assert
-        BDDMockito.then(petRepository).should().findByAbrigo(abrigo);
+        then(petRepository).should().findByAbrigo(abrigo);
     }
-
-    @Test
-    void deveriaListaPetsDeAbrigos(){
-        //Arrange
-        Pet pet1 = new Pet();
-        pet1.setId(1L);
-        pet1.setTipo(TipoPet.CACHORRO);
-        pet1.setNome("Rex");
-        pet1.setRaca("Labrador");
-        pet1.setIdade(2);
-        pet1.setAdotado(Boolean.FALSE);
-
-        Pet pet2 = new Pet();
-        pet2.setId(2L);
-        pet2.setTipo(TipoPet.GATO);
-        pet2.setNome("Miau");
-        pet2.setRaca("Persa");
-        pet2.setIdade(3);
-        pet2.setAdotado(Boolean.FALSE);
-
-        petsAbrigo.add(pet1);
-        petsAbrigo.add(pet2);
-
-        //Act
-        BDDMockito.when(abrigoRepository.getReferenceById(1l).getPets()).thenReturn(petsAbrigo);
-
-        ResponseEntity<List<ListagemPetDto>> resultPets = abrigoService.listarPets("1");
-
-        //Assert
-        assertEquals(HttpStatus.OK, resultPets.getStatusCode());
-        assertEquals(pet1.getId(), resultPets.getBody().get(0).id());
-        assertEquals(pet2.getId(), resultPets.getBody().get(1).id());
-    }
-
 }

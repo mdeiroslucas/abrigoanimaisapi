@@ -4,7 +4,9 @@ import br.com.mdros.adopet.api.dto.AbrigoDto.AbrigoDto;
 import br.com.mdros.adopet.api.dto.AbrigoDto.CadastroAbrigoDto;
 import br.com.mdros.adopet.api.dto.PetDto.CadastroPetDto;
 import br.com.mdros.adopet.api.dto.PetDto.ListagemPetDto;
+import br.com.mdros.adopet.api.dto.PetDto.PetDto;
 import br.com.mdros.adopet.api.exception.ValidacaoException;
+import br.com.mdros.adopet.api.model.Abrigo;
 import br.com.mdros.adopet.api.service.AbrigoService;
 import br.com.mdros.adopet.api.service.PetService;
 import jakarta.persistence.EntityNotFoundException;
@@ -44,19 +46,13 @@ public class AbrigoController {
     }
 
     @GetMapping("/{idOuNome}/pets")
-    public List<ListagemPetDto> listarPets(@PathVariable String idOuNome) {
-        return abrigoService.listarPets(idOuNome);
-    }
-
-    @PostMapping("/{idOuNome}/pets")
-    @Transactional
-    public ResponseEntity<String> cadastrarPet(@PathVariable String idOuNome, @RequestBody @Valid CadastroPetDto petDto) {
+    public ResponseEntity<List<PetDto>> listarPets(@PathVariable String idOuNome) {
         try {
-            abrigoService.cadastrarPet(idOuNome, petDto);
-
-            return ResponseEntity.ok().build();
+            List<PetDto> petsDoAbrigo = abrigoService.listarPetsDoAbrigo(idOuNome);
+            return ResponseEntity.ok(petsDoAbrigo);
         } catch (ValidacaoException exception) {
             return ResponseEntity.notFound().build();
         }
     }
+
 }

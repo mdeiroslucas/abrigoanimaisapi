@@ -4,6 +4,7 @@ import br.com.mdros.adopet.api.dto.AbrigoDto.AbrigoDto;
 import br.com.mdros.adopet.api.dto.AbrigoDto.CadastroAbrigoDto;
 import br.com.mdros.adopet.api.dto.PetDto.CadastroPetDto;
 import br.com.mdros.adopet.api.dto.PetDto.ListagemPetDto;
+import br.com.mdros.adopet.api.dto.PetDto.PetDto;
 import br.com.mdros.adopet.api.exception.ValidacaoException;
 import br.com.mdros.adopet.api.model.Abrigo;
 import br.com.mdros.adopet.api.model.Pet;
@@ -15,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,31 +50,26 @@ public class AbrigoService {
         abrigoRepository.save(abrigo);
     }
 
-    public List<ListagemPetDto> listarPets(@Valid String idOuNome){
-            Long id = Long.parseLong(idOuNome);
-            List<Pet> pets = abrigoRepository.getReferenceById(id).getPets();
 
-            List<ListagemPetDto> petsDto = pets.stream().map(ListagemPetDto::new).collect(Collectors.toList());
+    public List<PetDto> listarPetsDoAbrigo(String idOuNome) {
+        Abrigo abrigo = carregarAbrigo(idOuNome);
 
-            return petsDto;
+        return petRepository
+                .findByAbrigo(abrigo)
+                .stream()
+                .map(PetDto::new)
+                .toList();
     }
-
-    public void cadastrarPet(String idOuNome, CadastroPetDto petDto) {
-        Abrigo abrigo;
+    public Abrigo carregarAbrigo(String idOuNome) {
+        Optional<Abrigo> optional;
         try {
             Long id = Long.parseLong(idOuNome);
-            abrigo = abrigoRepository.getReferenceById(id);
-        } catch (NumberFormatException e) {
-            abrigo = abrigoRepository.findByNome(idOuNome);
+            optional = abrigoRepository.findById(id);
+        } catch (NumberFormatException exception) {
+            optional = abrigoRepository.findByNome(idOuNome);
         }
 
-        if (abrigo == null) {
-            throw new RuntimeException("Abrigo não encontrado");
-        }
-
-        Pet pet = new Pet(petDto, abrigo);
-        petRepository.save(pet);
-        abrigo.adicionarPet(pet);
-        abrigoRepository.save(abrigo);
+        return optional.orElseThrow(() -> new ValidacaoException("Abrigo não encontrado"));
     }
+
 }
