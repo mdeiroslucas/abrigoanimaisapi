@@ -21,9 +21,7 @@ public class TutorService {
             throw new TutorJaCadastradoNoSistemaException();
         }
 
-        Tutor tutor = new Tutor(tutorDto);
-
-        tutorRepository.save(tutor);
+        tutorRepository.save(new Tutor(tutorDto));
     }
 
     public void atualizarTutor(AtualizarTutorDto tutorDto){
