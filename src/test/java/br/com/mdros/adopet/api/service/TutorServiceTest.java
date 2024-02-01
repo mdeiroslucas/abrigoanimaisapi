@@ -2,6 +2,7 @@ package br.com.mdros.adopet.api.service;
 
 import br.com.mdros.adopet.api.dto.TutorDto.AtualizarTutorDto;
 import br.com.mdros.adopet.api.dto.TutorDto.CadastrarTutorDto;
+import br.com.mdros.adopet.api.exception.TutorJaCadastradoNoSistemaException;
 import br.com.mdros.adopet.api.model.Tutor;
 import br.com.mdros.adopet.api.repository.TutorRepository;
 import org.junit.jupiter.api.Test;
@@ -47,5 +48,12 @@ class TutorServiceTest {
         tutorService.atualizarTutor(atualizarTutorDto);
 
         BDDMockito.then(tutorRepository).should().save(tutor);
+    }
+
+    @Test
+    void naoDeveriaCadastrarTutorJaCadastrado(){
+        BDDMockito.when(tutorRepository.existsByTelefoneOrEmail(cadastrarTutorDto.telefone(), cadastrarTutorDto.email())).thenReturn(true);
+
+        assertThrows(TutorJaCadastradoNoSistemaException.class, () -> tutorService.cadastrar(cadastrarTutorDto));
     }
 }
