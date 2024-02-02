@@ -35,8 +35,6 @@ class PetControllerTest {
         ).andReturn().getResponse();
 
         //Assert
-
         assertEquals(200, response.getStatus());
     }
-
 }
